@@ -15,6 +15,4 @@ fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")
 require "#{fuzz_root}/lib/dm-fuzz.rb"
 
 # import some sample models to test on
-Dir.glob("#{fuzz_root}/spec/models/*.rb").each do |path|
-	require path
-end
+DataMapper::Fuzz.load_sample_models
