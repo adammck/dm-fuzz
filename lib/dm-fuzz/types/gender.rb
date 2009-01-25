@@ -11,6 +11,11 @@ module DataMapper
 				:female => %w[female woman girl f]
 			}
 			
+			Storage = {
+				:male   => 0,
+				:female => 1
+			}
+			
 			# Called by DM when a property of this type is
 			# set, and returns the value to be stored. Should
 			# accept a wide range of junk, and return strict data
@@ -27,14 +32,14 @@ module DataMapper
 			# Called by DM when _value is about to be stored
 			# in the database (in this case, as an Integer).
 			def self.dump(value, property=nil)
-				(value == :male) ? 0 : 1
+				Storage[value]
 			end
 			
 			# Called by DM when the value produced by self.dump
 			# is retrieved, and is ready to be converted back
 			# into a more friendly data type.
 			def self.load(value)
-				(value == 0) ? (:male) : (:female)
+				Storage.invert[value]
 			end
 			
 			# a list of various things that should be
@@ -46,7 +51,12 @@ module DataMapper
 				"boy"    => :male,
 				"girl"   => :female,
 				"m"      => :male,
-				"f"      => :female }
+				"f"      => :female,
+				
+				# these are NOT valid
+				123      => nil,
+				"alpha"  => nil,
+				:bravo   => nil }
 		end
 	end
 end
