@@ -1,20 +1,8 @@
 #!/usr/bin/env ruby
 # vim: noet
 
-root = File.expand_path(File.dirname(__FILE__) + "/..")
-require "#{root}/spec/helper.rb"
-
-# define a familiar model with fuzzy
-# types, to parse some crazy inputs
-class Child
-	include DataMapper::Resource
-	include DataMapper::Fuzz
-
-	property :id, Integer, :serial=>true
-	property :name, String
-	property :gender, Gender
-	property :age, Age
-end
+fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")
+require "#{fuzz_root}/spec/helper.rb"
 
 describe DataMapper::Fuzz do
 	describe "Properties" do
@@ -33,11 +21,10 @@ describe DataMapper::Fuzz do
 		end
 		
 		it "should reject junk data" do
-			@child.parse("xyzzy").should == nil
-		end
-		
-		it "should reject blank strings" do
 			@child.parse("").should == nil
+			@child.parse("xyzzy").should == nil
+			@child.parse(:mudkips).should == nil
+			@child.parse(Object).should == nil
 		end
 		
 		it "should extract a single property under ideal circumstances" do

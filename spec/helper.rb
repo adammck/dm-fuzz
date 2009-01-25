@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # vim: noet
 
-
 # import rspec
 require "rubygems"
 require "spec"
@@ -12,5 +11,10 @@ require "dm-types"
 
 # import dm-fuzz by relative path, so
 # we don't accidentally test the gem
-dir = File.dirname(__FILE__)
-require "#{dir}/../lib/dm-fuzz.rb"
+fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")
+require "#{fuzz_root}/lib/dm-fuzz.rb"
+
+# import some sample models to test on
+Dir.glob("#{fuzz_root}/spec/models/*.rb").each do |path|
+	require path
+end
