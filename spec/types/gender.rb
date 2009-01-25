@@ -4,23 +4,16 @@
 root = File.expand_path(File.dirname(__FILE__) + "/../..")
 require "#{root}/spec/helper.rb"
 
-describe DataMapper::Fuzz::Gender do
-	before(:each) do
-		@child = Child.new
-	end
-	
+describe (klass = DataMapper::Fuzz::Gender) do
 	it "rejects junk data" do
-		@child.gender = :hermaphrodite
-		@child.gender.should == nil
+		klass.typecast(:hermaphrodite).should == nil
 	end
 	
-	it "accepts :male" do
-		@child.gender = :male
-		@child.gender.should == :male
-	end
-	
-	it "accepts :female" do
-		@child.gender = :female
-		@child.gender.should == :female
+	describe "Examples" do
+		klass::Examples.each do |value, output|
+			it "accepts #{value.inspect}" do
+				klass.typecast(value).should == output
+			end
+		end
 	end
 end
