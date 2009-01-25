@@ -18,10 +18,6 @@ describe (klass = DataMapper::Fuzz::Gender) do
 	end
 	
 	describe "Storage" do
-		before(:each) do
-			@c = Child.new
-		end
-		
 		it "stores :male and :female as integers" do
 			klass.dump(:male).should == 0
 			klass.dump(:female).should == 1
