@@ -11,4 +11,6 @@ end
 
 # load all supporting files
 dir = File.dirname(__FILE__)
+require "#{dir}/dm-fuzz/type.rb"
 require "#{dir}/dm-fuzz/types/gender.rb"
+require "#{dir}/dm-fuzz/types/age.rb"

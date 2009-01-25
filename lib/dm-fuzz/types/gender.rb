@@ -3,14 +3,25 @@
 
 module DataMapper
 	module Fuzz
-		class Gender < DataMapper::Type
+		class Gender < Type
 			primitive Integer
+			
+			Variants = {
+				:male   => %w[male man boy m],
+				:female => %w[female woman girl f]
+			}
 			
 			# Called by DM when a property of this type is
 			# set, and returns the value to be stored. Should
 			# accept a wide range of junk, and return strict data
 			def self.typecast(value, property=nil)
-				[:male, :female].include?(value) ? value : nil
+				Variants.each do |output, variants|
+					return output if variants.include?(value.to_s)
+				end
+				
+				# this value
+				# isn't valid
+				nil
 			end
 			
 			# Called by DM when _value is about to be stored
