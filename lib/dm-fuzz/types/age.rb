@@ -30,11 +30,6 @@ module DataMapper
 				# return a date object from the days ago
 				Date.today - (n_str.to_i * multipliers[unit.to_s[0,1]])
 			end
-			
-			Examples = {
-				"1 yrs"        => (Date.today - 365),
-				"2 years old"  => (Date.today - 730),
-				"3 months old" => (Date.today - 90) }
 		end
 	end
 end

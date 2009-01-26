@@ -32,6 +32,16 @@ module DataMapper
 				(m == nil) ? nil : normalize(*m.captures)
 			end
 			
+			
+			# This base class cannot store anything directly,
+			# so subclasses should all overload this method.
+			# Returning true indicates that the value is already
+			# in a "dumpable" state (it doesn't need parsing);
+			# other values will be parsed before being stored.
+			def self.dumpable?(value)
+				raise NotImplementedError
+			end
+			
 
 			# Returns the pattern (a Regex) matched by this
 			# class, or raises RuntimeError if none is available.
