@@ -6,39 +6,32 @@ module DataMapper
 		class Gender < Type
 			primitive Integer
 			
-			Variants = {
-				:male   => %w[male man boy m],
-				:female => %w[female woman girl f]
-			}
+			Pattern = "(male|man|boy|m)|(female|woman|girl|f)"
+			StoreAs = [:male, :female]
 			
-			Pattern = (Variants[:male] + Variants[:female]).join("|")
+			# Returns true if _value_ is ready
+			# to be stored in the database.
+			def self.dumpable?(value)
+				StoreAs.include?(value)
+			end
 			
-			Storage = {
-				:male   => 0,
-				:female => 1
-			}
-			
-			def self.normalize(gen_str)
-				Variants.each do |output, variants|
-					return output if variants.include?(gen_str)
-				end
-				
-				# this value
-				# isn't valid
-				nil
+			# Given the strings captured by Pattern, returns
+			# the strict representation of the captured gender.
+			def self.normalize(male_str, female_str)
+				(female_str && :female) || (male_str && :male) || nil
 			end
 			
 			# Called by DM when _value is about to be stored
 			# in the database (in this case, as an Integer).
 			def self.dump(value, property=nil)
-				Storage[value]
+				StoreAs.index(value)
 			end
 			
 			# Called by DM when the value produced by self.dump
 			# is retrieved, and is ready to be converted back
 			# into a more friendly data type.
 			def self.load(value)
-				Storage.invert[value]
+				StoreAs[value]
 			end
 			
 			# a list of various things that should be

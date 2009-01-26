@@ -27,14 +27,19 @@ describe DataMapper::Fuzz do
 			@child.parse(Object).should == nil
 		end
 		
+		it "should extract a single property under ideal circumstances" do
+			@child.parse("male").should_not == nil
+			@child.gender.should == :male
+		end
+		
 		it "should extract multiple properties under ideal circumstances" do
-			@child.parse("male 4 years old").should == true
+			@child.parse("male 4 years old").should_not == nil
 			@child.age.should == Date.today - (365*4)
-			@child.gender.sould == :male
+			@child.gender.should == :male
 		end
 		
 		it "should extract multple properties out of order" do
-			@child.parse("5 year old female").should == true
+			@child.parse("5 year old female").should_not == nil
 			@child.age.should == Date.today - (365*5)
 			@child.gender.should == :female
 		end

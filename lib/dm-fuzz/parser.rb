@@ -32,21 +32,19 @@ module DataMapper
 			return nil unless\
 				str.respond_to? :match
 			
-			#matches = {}
-			return nil
+			parsed = []
 			
 			# iterate this model's fuzzable properties, and further extract
 			# _str_ via the Type class of each one. note that Type.extract!
 			# is destructive, so _str_ is changing throughout this iterator
 			self.class.fuzzables.each do |prop|
 				unless(extracted = prop.type.extract!(str)).nil?
-
+					attribute_set prop.name, extracted
+					parsed.push(prop)
 				end
 			end
 			
-			self.class.fuzzables.collect do |prop|
-				prop.type
-			end
+			(parsed.empty?) ? nil : parsed
 		end
 	end
 end

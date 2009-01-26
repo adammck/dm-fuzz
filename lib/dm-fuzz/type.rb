@@ -15,6 +15,12 @@ module DataMapper
 			# c.gender => :male
 			def self.typecast(value, property=nil)
 				
+				# if this value is already dumpable (ie,
+				# it's ready to write to the db without
+				# magic parsing), we have nothing to do
+				return value if
+					dumpable?(value)
+				
 				# refuse to set the property if the
 				# value can't be matched against
 				return nil unless\

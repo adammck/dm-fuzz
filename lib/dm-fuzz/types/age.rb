@@ -10,6 +10,14 @@ module DataMapper
 			
 			Pattern = '(\d+)(?:\s*(years? old|years?|yrs?|months? old|months|days? old|days))'
 			
+			# Returns true if _value_ is already
+			# a Date, and doesn't need parsing.
+			def self.dumpable?(value)
+				value.is_a?(Date)
+			end
+			
+			# Given the strings captured by Pattern, returns
+			# a Date containing the aproximate date of birth.
 			def self.normalize(n_str, unit)
 				
 				# multiply the quantity based upon
