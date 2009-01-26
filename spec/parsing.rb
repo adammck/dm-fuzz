@@ -27,21 +27,6 @@ describe DataMapper::Fuzz do
 			@child.parse(Object).should == nil
 		end
 		
-		it "should extract a single property under ideal circumstances" do
-			@child.parse("1 year old").should == true
-			@child.age.should == Date.today - 365
-		end
-		
-		it "should extract a single property from among junk data" do
-			@child.parse("adam is 2 years old this week").should == true
-			@child.age.should == Date.today - (365*2)
-		end
-		
-		it "should store unparsed data" do
-			@child.parse("evan thinks that he is 3 years old").should == true
-			@child.unparsed.should == ["evan thinks that he is "]
-		end
-		
 		it "should extract multiple properties under ideal circumstances" do
 			@child.parse("male 4 years old").should == true
 			@child.age.should == Date.today - (365*4)

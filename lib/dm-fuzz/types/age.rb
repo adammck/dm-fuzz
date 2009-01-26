@@ -8,11 +8,9 @@ module DataMapper
 		class Age < Type
 			primitive Date
 			
-			Pattern = /\A(\d+)(?:\s*(years? old|years?|yrs?|months? old|months|days? old|days))\Z/i
+			Pattern = '(\d+)(?:\s*(years? old|years?|yrs?|months? old|months|days? old|days))'
 			
-			def self.typecast(value, property=nil)
-				return nil unless (m = value.match(Pattern))
-				n_str, unit = *m.captures
+			def self.normalize(n_str, unit)
 				
 				# multiply the quantity based upon
 				# the unit, in a very rough fashion

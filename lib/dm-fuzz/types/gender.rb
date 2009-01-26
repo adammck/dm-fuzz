@@ -11,17 +11,16 @@ module DataMapper
 				:female => %w[female woman girl f]
 			}
 			
+			Pattern = (Variants[:male] + Variants[:female]).join("|")
+			
 			Storage = {
 				:male   => 0,
 				:female => 1
 			}
 			
-			# Called by DM when a property of this type is
-			# set, and returns the value to be stored. Should
-			# accept a wide range of junk, and return strict data
-			def self.typecast(value, property=nil)
+			def self.normalize(gen_str)
 				Variants.each do |output, variants|
-					return output if variants.include?(value.to_s)
+					return output if variants.include?(gen_str)
 				end
 				
 				# this value

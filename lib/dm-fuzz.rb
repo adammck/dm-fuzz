@@ -10,6 +10,16 @@ require "dm-types"
 # everything to live in
 module DataMapper
 	module Fuzz
+
+		# The character inserted in place of a Token
+		# when it is plucked out of a string (to prevent
+		# the surrounding text from being considered a
+		# single token, when it is clearly not)
+		Replacement = 0.chr
+
+		# The regex chunk which is considered a valid
+		# delimiter between tokens in a form submission.
+		Delimiter = '\A|[\s;,\*]+|' + Replacement + '|\Z'
 		
 		def self.load_sample_models
 			fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")

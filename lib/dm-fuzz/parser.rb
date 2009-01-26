@@ -24,7 +24,29 @@ module DataMapper
 		# the fuzzable properties of this model using
 		# heuristic magic.
 		def parse(str)
-			nil
+			
+			# it's okay if the argument can't
+			# be matched against (it might be
+			# a nil, or some other junk). just
+			# return nil (no matches)
+			return nil unless\
+				str.respond_to? :match
+			
+			#matches = {}
+			return nil
+			
+			# iterate this model's fuzzable properties, and further extract
+			# _str_ via the Type class of each one. note that Type.extract!
+			# is destructive, so _str_ is changing throughout this iterator
+			self.class.fuzzables.each do |prop|
+				unless(extracted = prop.type.extract!(str)).nil?
+
+				end
+			end
+			
+			self.class.fuzzables.collect do |prop|
+				prop.type
+			end
 		end
 	end
 end
