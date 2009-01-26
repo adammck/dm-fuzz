@@ -43,5 +43,10 @@ describe DataMapper::Fuzz do
 			@child.age.should == Date.today - (365*5)
 			@child.gender.should == :female
 		end
+		
+		it "should store unparseable data" do
+			@child.parse("i have a 6 month old monkey").should_not == nil
+			@child.unparsed.should == ["i have a", "monkey"]
+		end
 	end
 end

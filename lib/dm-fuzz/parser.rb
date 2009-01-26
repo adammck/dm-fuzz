@@ -44,7 +44,33 @@ module DataMapper
 				end
 			end
 			
+			# store the remains of the parsed data,
+			# so it can be presented to the end user
+			@unparsed = str.dup
+			
+			# return an array of the properties that were
+			# updated, or nil (NOT empty array!) if none were
 			(parsed.empty?) ? nil : parsed
+		end
+		
+		# Returns an Array containing the parts
+		# of the last string passed to _parse_
+		# that were not captured and normalized
+		# into dumpable values.
+		#
+		#   c = Child.new
+		#
+		#   c.parse("13 year old")
+		#   c.unparsed => []
+		#
+		#   c.parse("13 blah blah")
+		#   c.unparsed => ["blah blah"]
+		#
+		#   c.parse("blah 13 y/o blah")
+		#   c.unparsed => ["blah", "blah"]
+		#
+		def unparsed
+			@unparsed.split(Fuzz::Replacement)
 		end
 	end
 end

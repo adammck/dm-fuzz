@@ -21,6 +21,10 @@ module DataMapper
 		# delimiter between tokens in a form submission.
 		Delimiter = '\A|[\s;,\*]+|' + Replacement + '|\Z'
 		
+		# Imports all of the ruby files in the spec/models
+		# directory, which contain some models to play with.
+		# Declared here, rather than in a spec helper, so it
+		# can be called from bin/console.rb also.
 		def self.load_sample_models
 			fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")
 			Dir.glob("#{fuzz_root}/spec/models/*.rb").each do |path|

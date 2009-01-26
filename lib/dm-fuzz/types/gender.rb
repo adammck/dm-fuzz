@@ -6,7 +6,7 @@ module DataMapper
 		class Gender < Type
 			primitive Integer
 			
-			Pattern = "(male|man|boy|m)|(female|woman|girl|f)"
+			Pattern = "(?:(male|man|boy|m)|(female|woman|girl|f))"
 			StoreAs = [:male, :female]
 			
 			# Returns true if _value_ is ready
