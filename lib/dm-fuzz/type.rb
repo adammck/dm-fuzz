@@ -112,6 +112,12 @@ module DataMapper
 				str.replace(ext[1])
 				ext[0]
 			end
+			
+			# To test a type (via bin/test.rb),
+			# just attempt to typecast _str_.
+			def self.test(str)
+				typecast(str)
+			end
 		end
 	end
 end

@@ -18,6 +18,15 @@ module DataMapper
 					prop if prop.type.ancestors.include?(DataMapper::Fuzz::Type)
 				end.compact
 			end
+			
+			# To test a model (via bin/test.rb), create
+			# a new instance of it, parse _str_, and
+			# return the instance for inspection.
+			def test(str)
+				tmp = self.new
+				tmp.parse(str)
+				tmp
+			end
 		end
 		
 		# Given an arbitrary string, attempt to populate
