@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 # vim: noet
 
-# check for a single argument
-unless (type = ARGV[0])
-	puts "Usage fail."
-	exit
-end
-
 # import everything fuzz
 fuzz_root = File.expand_path(File.dirname(__FILE__) + "/..")
 require "#{fuzz_root}/lib/dm-fuzz.rb"
@@ -29,9 +23,8 @@ end
 
 # check that the argument was the
 # label of a class that we can test
-unless (klass = types[type])
-	puts "Argument fail."
-	puts "Try: #{types.keys.join(",")}"
+unless (type = ARGV[0]) and (klass = types[type])
+	puts "Usage: test.rb [#{types.keys.join(", ")}]"
 	exit
 end
 
