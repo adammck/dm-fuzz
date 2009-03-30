@@ -33,7 +33,7 @@ end
 # and printing the output
 begin
 	while(true)
-		print "#{klass}> "
+		print "#{type}> "
 		str = STDIN.gets.strip
 		puts "=> " + klass.test(str).inspect
 	end
