@@ -19,14 +19,19 @@ module DataMapper
 				end.compact
 			end
 			
-			# To test a model (via bin/test.rb), create
-			# a new instance of it, parse _str_, and
-			# return the instance for inspection.
-			def test(str)
+			# Create a new instance of this model, parse
+			# and populate the fuzzable properties, and
+			# return the new object in a single call.
+			def parse(str)
 				tmp = self.new
 				tmp.parse(str)
 				tmp
 			end
+			
+			# the _test_ method used to do exactly
+			# the same as _parse_ (above), so for
+			# now, create a backwards-compat alias
+			alias :test :parse
 		end
 		
 		# Given an arbitrary string, attempt to populate
