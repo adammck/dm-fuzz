@@ -8,7 +8,7 @@ module DataMapper
 		class Age < Type
 			primitive Date
 			
-			Pattern = '(\d+)(?:\s*(years? old|years?|yrs?|months? old|months|days? old|days))'
+			Pattern = '(\d+)(?:\s*(years? old|years?|yrs?|months? old|months?|days? old|days))'
 			
 			# Returns true if _value_ is already
 			# a Date, and doesn't need parsing.

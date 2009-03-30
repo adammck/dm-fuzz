@@ -14,6 +14,7 @@ describe (age = DataMapper::Fuzz::Age) do
 		it "accepts a variety of age formats" do
 			examples = {
 				"1 yrs"        => (Date.today - 365),
+				"1 month"      => (Date.today - 30),
 				"2 years old"  => (Date.today - 730),
 				"3 months old" => (Date.today - 90),
 				"4"            => (Date.today - (365*4)) }
