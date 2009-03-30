@@ -30,7 +30,7 @@ module DataMapper
 			# Called by DM when the value produced by self.dump
 			# is retrieved, and is ready to be converted back
 			# into a more friendly data type.
-			def self.load(value)
+			def self.load(value, property=nil)
 				StoreAs[value]
 			end
 			
