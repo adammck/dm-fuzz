@@ -15,7 +15,8 @@ describe (age = DataMapper::Fuzz::Age) do
 			examples = {
 				"1 yrs"        => (Date.today - 365),
 				"2 years old"  => (Date.today - 730),
-				"3 months old" => (Date.today - 90) }
+				"3 months old" => (Date.today - 90),
+				"4"            => (Date.today - (365*4)) }
 			
 			examples.each do |val, out|
 				age.typecast(val).should == out
@@ -25,8 +26,7 @@ describe (age = DataMapper::Fuzz::Age) do
 	
 	describe "Extracting" do
 		it "should extract a single property under ideal circumstances" do
-			age.extract("i am 1 years old today!").should ==\
-				[(Date.today - 365), "i am#{0.chr}today!"]
+			age.extract("1 year old").should == [(Date.today - 365), ""]
 		end
 		
 		it "should extract a single property from among junk data" do
