@@ -1,0 +1,73 @@
+dm-fuzz is a bunch of rich property types for DataMapper, which provide semantic wrappers
+around the built-in primitive types. Rather than declaring a _weight_ property as a Float,
+define it as a DataMapper::Fuzz::Weight -- the added semantic information will provide all
+kinds of opportunities for validation, sanity checking, implicit unit conversion, and fuzzy
+parsing... which mostly haven't been implemented yet.
+
+Um, an example would probably work better.
+
+
+  # the following model is defined in spec/models/child.rb,
+  # and we'll use it here to demonstrate dm-fuzz in irb
+  
+  class Child
+    include DataMapper::Resource
+    include DataMapper::Fuzz
+    
+    property :id, Integer, :serial=>true
+    property :name, String
+    property :gender, Gender
+    property :weight, Weight, :unit=>:kg
+    property :dob, Age
+  end
+  
+  # and since Date#inspect is so utterly useless,
+  # let's replace that, so we can read the output
+  
+  class Date
+  	def inspect
+  		"#<%s: %s>" % [self.class, to_s]
+  	end
+  end
+  
+  
+An imaginary IRB session follows...
+  
+  
+  # create a new Child object. nothing surprising here;
+  # this is exactly the same as vanilla datamapper
+  
+  >> Child.new(:name=>"Adam", :gender=>:male, :weight=>80)
+  => #<Child id=nil name="Adam" gender=:male weight=80.0 age=nil>
+  
+  
+  # now, let's set some of those fields with fuzzy data,
+  # as might be received over SMS or a web form. the kind
+  # of data that {health extension workers in rural Africa}[http://www.youtube.com/results?search_query=RapidSMS]
+  # might give you, if you weren't explicit...
+  
+  >> Child.new(:name=>"Bob", :gender=>"boy", :weight=>"135lb")
+  => #<Child id=nil name="Bob" gender=:male weight=61.23496995>
+  
+  >> Child.new(:gender=>"woman", :age=>"2 years old", :weight=>"8 stones")
+  => #<Child id=nil name=nil gender=:female weight=50.80234544 age=#<Date: 2007-03-31>>
+  
+  >> Child.new(:age=>"1 months", :gender=>"unknown", :weight=>"really fat")
+  => #<Child id=nil name=nil gender=nil weight=nil age=#<Date: 2009-02-28>>
+  
+  
+  # a single arbitrary string can be parsed to
+  # populate a model's "fuzzable" properties,
+  # too! this is a bit quirky, right now...
+  
+  >> a = Child.parse("21 month old female, 15lb")
+  => #<Child id=nil name=nil gender=:female weight=6.80388555 age=#<Date: 4908581/2,0,2299161>>
+  
+  >> b = Child.parse("2 year old boy")
+  => #<Child id=nil name=nil gender=:male weight=nil age=#<Date: 4908381/2,0,2299161>>
+  
+  >> c = Child.parse("woman of 60kg")
+  => #<Child id=nil name=nil gender=:female weight=60.0 age=nil>
+
+
+More coming soon. Don't use this for anything serious yet, but it's a rather fun toy.
