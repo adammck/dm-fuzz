@@ -35,14 +35,23 @@ module DataMapper
 			UnitsPattern = Units.values.flatten.join("|")
 			Pattern = '(\d+(?:\.\d+)?)(?:\s*(' + UnitsPattern + '))'
 			
+			
 			# Returns true if _value_ is already
 			# a Float, and doesn't need parsing.
 			def self.dumpable?(value)
 				value.is_a?(Float)
 			end
 			
+			
+			# Overload the Fuzz::Type.typecast method, to intercept and cast
+			# any numeric types to float before attempting to parse them.
+			def self.typecast(value, property=nil)
+				value.is_a?(Numeric) ? value.to_f : super
+			end
+      
+			
 			# Given the strings captured by Pattern, returns
-			# a Float containing the weight in kilograms
+			# a Float containing the weight in kilograms.
 			def self.normalize(n_str, unit_str)
 				
 				# the pattern was matched, so we know that _unit_str_

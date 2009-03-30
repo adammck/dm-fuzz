@@ -8,5 +8,6 @@ class Child
 	property :id, Integer, :serial=>true
 	property :name, String
 	property :gender, Gender
+	property :weight, Weight
 	property :age, Age
 end

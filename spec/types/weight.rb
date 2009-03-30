@@ -11,7 +11,19 @@ describe (weight = DataMapper::Fuzz::Weight) do
 			weight.typecast("w00t").should == nil
 			weight.typecast(:YO).should == nil
 		end
-	
+		
+		it "accepts various numeric formats" do
+			examples = {
+				100              => 100.0,
+				200.0            => 200.0,
+				(123456789 ** 2) => 15241578750190521
+			}
+			
+			examples.each do |val, out|
+				weight.typecast(val).should == out
+			end
+		end
+		
 		it "accepts a variety of metric weight formats" do
 			examples = {
 				"10kg"       => 10.0,
